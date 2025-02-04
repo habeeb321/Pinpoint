@@ -66,25 +66,25 @@ class LocationController extends GetxController {
   }
 
   Future<void> getCurrentLocation() async {
-    try {
-      if (!await _checkLocationPermissions()) return;
+    if (!await _checkLocationPermissions()) return;
 
-      final position = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(
-          accuracy: LocationAccuracy.high,
-          distanceFilter: 100,
-        ),
-      );
-
-      Get.dialog(
-        LocationNameDialog(
-          onSave: (name) =>
-              saveLocation(name, position.latitude, position.longitude),
-        ),
-      );
-    } catch (e) {
-      Fluttertoast.showToast(msg: 'Error: ${e.toString()}');
-    }
+    Get.dialog(
+      LocationNameDialog(
+        onSave: (name) async {
+          try {
+            final position = await Geolocator.getCurrentPosition(
+              locationSettings: const LocationSettings(
+                accuracy: LocationAccuracy.high,
+              ),
+            );
+            saveLocation(name, position.latitude, position.longitude);
+          } catch (e) {
+            Fluttertoast.showToast(
+                msg: 'Error fetching location: ${e.toString()}');
+          }
+        },
+      ),
+    );
   }
 
   Future<bool> _checkLocationPermissions() async {

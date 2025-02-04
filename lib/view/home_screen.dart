@@ -87,45 +87,47 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Obx(() {
-        final filteredLocations = controller.filteredLocations;
-        return filteredLocations.isEmpty
-            ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      controller.searchQuery.isNotEmpty
-                          ? 'No locations found'
-                          : 'No saved locations',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey.shade800,
+      body: Obx(
+        () {
+          final filteredLocations = controller.filteredLocations;
+          return filteredLocations.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        controller.searchQuery.isNotEmpty
+                            ? 'No locations found'
+                            : 'No saved locations',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey.shade800,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      controller.searchQuery.isNotEmpty
-                          ? 'Try a different search query'
-                          : 'Add your first location by tapping the + button',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey.shade600,
+                      const SizedBox(height: 8),
+                      Text(
+                        controller.searchQuery.isNotEmpty
+                            ? 'Try a different search query'
+                            : 'Add your first location by tapping the + button',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade600,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            : ListView.builder(
-                itemCount: filteredLocations.length,
-                itemBuilder: (context, index) => LocationListTile(
-                  location: filteredLocations[index],
-                  onDelete: () => controller.deleteLocation(
-                      controller.locations.indexOf(filteredLocations[index])),
-                ),
-              );
-      }),
+                    ],
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: filteredLocations.length,
+                  itemBuilder: (context, index) => LocationListTile(
+                    location: filteredLocations[index],
+                    onDelete: () => controller.deleteLocation(
+                        controller.locations.indexOf(filteredLocations[index])),
+                  ),
+                );
+        },
+      ),
     );
   }
 }
